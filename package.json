@@ -1,0 +1,10 @@
+{
+  "name": "node-weekly-naja",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.19.2",
+    "typescript": "^3.6.3"
+  }
+}
