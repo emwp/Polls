@@ -3,8 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
+    "clean": "rm -rf ./dist",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
+  },
   "devDependencies": {
+    "@types/node": "^12.7.5",
     "nodemon": "^1.19.2",
+    "ts-node": "^8.4.1",
     "typescript": "^3.6.3"
   }
 }
