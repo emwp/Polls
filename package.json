@@ -4,10 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "dev": "nodemon src/index.ts",
     "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
     "clean": "rm -rf ./dist",
-    "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
     "docker:build": "docker build -t weeklynaja .",
     "pg-dev": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=weeklynaja -d -p 5432:5432 -v /home/emwp/docker/pgdata:/var/lib/postgresql/data postgres:11"
   },
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@types/graphql": "^14.5.0",
+    "apollo-server-express": "^2.9.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^14.5.7",
