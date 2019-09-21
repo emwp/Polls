@@ -7,7 +7,9 @@
     "build": "rm -rf ./dist && tsc -p tsconfig.build.json",
     "clean": "rm -rf ./dist",
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts"
+    "dev": "nodemon src/server.ts",
+    "docker:build": "docker build -t weeklynaja .",
+    "pg-dev": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=weeklynaja -d -p 5432:5432 -v /home/emwp/docker/pgdata:/var/lib/postgresql/data postgres:11"
   },
   "devDependencies": {
     "@types/cors": "^2.8.6",
@@ -29,7 +31,13 @@
     "typescript": "^3.6.3"
   },
   "dependencies": {
+    "@types/graphql": "^14.5.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "graphql": "^14.5.7",
+    "pg": "^7.12.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^0.17.5",
+    "typeorm": "^0.2.19"
   }
 }
