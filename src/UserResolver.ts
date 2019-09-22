@@ -1,14 +1,19 @@
 import { Resolver, Query, Mutation, Arg, Ctx } from 'type-graphql'
-import { User, UserResponse, LoginResponse } from './entity/User'
 import { hash, compare } from 'bcryptjs'
-import { sign } from 'jsonwebtoken'
+import { User, UserResponse, LoginResponse } from './entity/User'
+import { createAccessToken, createRefreshToken } from './auth'
 import { MyContext } from './MyContext'
 
 @Resolver()
 export class UserResolver {
   @Query(() => String)
   async hello (): Promise<string> {
-    return 'Potato!'
+    return 'hello!'
+  }
+
+  @Query(() => String)
+  async bye (): Promise<string> {
+    return 'bye!'
   }
 
   @Query(() => [UserResponse])
@@ -58,12 +63,12 @@ export class UserResolver {
 
     res.cookie(
       'jid',
-      sign({ userId: user.id }, 'superrefreshsecret', { expiresIn: '7d' }),
+      createRefreshToken(user),
       { httpOnly: true }
     )
 
     return {
-      accessToken: sign({ userId: user.id }, 'supersecretsecret', { expiresIn: '15m' })
+      accessToken: createAccessToken(user)
     }
   }
 }
