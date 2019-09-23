@@ -3,22 +3,25 @@ import 'reflect-metadata'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import { buildSchema } from 'type-graphql'
-import { UserResolver } from './UserResolver'
 import { createConnection } from 'typeorm'
+import cors from 'cors'
+import { AuthResolver } from './modules/Authentication/AuthResolver'
 
 async function main () : Promise<void> {
+  const app = express()
+
+  app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+
   await createConnection()
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver]
+      resolvers: [AuthResolver]
     }),
     context: ({ req, res }) : {} => ({ req, res })
   })
 
-  const app = express()
-
-  apolloServer.applyMiddleware({ app })
+  apolloServer.applyMiddleware({ app, cors: false })
 
   app.listen(4000, () => {
     console.log('Server started on http://localhost:4000/graphql')

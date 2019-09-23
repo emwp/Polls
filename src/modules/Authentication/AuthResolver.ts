@@ -1,23 +1,17 @@
-import { Resolver, Query, Mutation, Arg, Ctx } from 'type-graphql'
+import { Resolver, Query, Mutation, Arg, Ctx, UseMiddleware } from 'type-graphql'
 import { hash, compare } from 'bcryptjs'
-import { User, UserResponse, LoginResponse } from './entity/User'
-import { createAccessToken, createRefreshToken } from './auth'
-import { MyContext } from './MyContext'
+import { MyContext } from '../../MyContext'
+import { User } from '../../entities/User'
+import { UserResponse, LoginResponse } from '../../entities/types'
+import { isAuth } from './isAuth'
+import { createAccessToken } from './authToken'
 
 @Resolver()
-export class UserResolver {
-  @Query(() => String)
-  async hello (): Promise<string> {
-    return 'hello!'
-  }
-
-  @Query(() => String)
-  async bye (): Promise<string> {
-    return 'bye!'
-  }
-
+export class AuthResolver {
   @Query(() => [UserResponse])
-  async users (): Promise<UserResponse[]> {
+  @UseMiddleware(isAuth)
+  async users (@Ctx() { payload }: MyContext): Promise<UserResponse[]> {
+    console.log(payload)
     const users = await User.find()
     return users
   }
@@ -46,8 +40,7 @@ export class UserResolver {
   @Mutation(() => LoginResponse)
   async login (
     @Arg('email') email: string,
-    @Arg('password') password: string,
-    @Ctx() { res }: MyContext
+    @Arg('password') password: string
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } })
 
@@ -60,12 +53,6 @@ export class UserResolver {
     if (!valid) {
       throw new Error('Invalid credentials')
     }
-
-    res.cookie(
-      'jid',
-      createRefreshToken(user),
-      { httpOnly: true }
-    )
 
     return {
       accessToken: createAccessToken(user)
