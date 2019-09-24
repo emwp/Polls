@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql'
-import { UserResponse, LoginResponse } from '../../entities/types'
+import { UserResponse, LoginResponse } from './types'
 import { isAuth } from './isAuth'
 import { AuthService } from './AuthService'
 

@@ -2,7 +2,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   env: {
     es6: true,
-    node: true
+    node: true,
+    jest: true
   },
   extends: [
     'plugin:@typescript-eslint/recommended',
@@ -22,6 +23,7 @@ module.exports = {
   ],
   rules: {
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@eslint/no-path-concat": "off"
   }
 }
