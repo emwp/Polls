@@ -2,8 +2,10 @@ import {
   BaseEntity,
   Entity,
   PrimaryGeneratedColumn,
-  Column
+  Column,
+  OneToMany
 } from 'typeorm'
+import { Poll } from './Poll'
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -16,6 +18,6 @@ export class User extends BaseEntity {
   @Column()
   password: string
 
-  @Column('int', { default: 0 })
-  tokenVersion: number
+  @OneToMany(() => Poll, poll => poll.user, { eager: true })
+  polls: Poll[]
 }
