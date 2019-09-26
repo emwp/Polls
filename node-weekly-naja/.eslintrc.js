@@ -24,6 +24,7 @@ module.exports = {
   rules: {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@eslint/no-path-concat": "off"
+    "@eslint/no-path-concat": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
   }
 }

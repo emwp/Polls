@@ -6,6 +6,7 @@ import { buildSchema } from 'type-graphql'
 import { createConnection } from 'typeorm'
 import cors from 'cors'
 import { AuthResolver } from './modules/Authentication/AuthResolver'
+import { PollResolver } from './modules/Poll/PollResolver'
 
 async function main () : Promise<void> {
   const app = express()
@@ -16,7 +17,7 @@ async function main () : Promise<void> {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [AuthResolver]
+      resolvers: [AuthResolver, PollResolver]
     }),
     context: ({ req, res }) : {} => ({ req, res })
   })
