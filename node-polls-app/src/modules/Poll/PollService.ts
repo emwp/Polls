@@ -24,6 +24,19 @@ const PollService = {
     } catch (err) {
       throw new Error(`Unable to create poll for user ${userId}`)
     }
+  },
+
+  removePoll: async (id: string, userId: string) : Promise<boolean> => {
+    try {
+      const poll = await Poll.findOneOrFail({
+        where:
+          { id: id, user: userId }
+      })
+      await poll.remove()
+      return true
+    } catch (error) {
+      throw new Error(`Pool not found for user: ${userId}`)
+    }
   }
 }
 
