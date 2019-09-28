@@ -12,6 +12,9 @@ class PollCreatedResponse {
   moderated: boolean
 
   @Field()
+  open: boolean
+
+  @Field()
   userId: string
 }
 

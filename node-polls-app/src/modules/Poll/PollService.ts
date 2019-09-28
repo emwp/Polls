@@ -12,6 +12,8 @@ const PollService = {
       poll.name = name
       poll.moderated = moderated
       poll.user = user
+      poll.open = true
+      poll.createdAt = new Date()
 
       const persistedPoll = await poll.save()
 
@@ -19,10 +21,11 @@ const PollService = {
         id: persistedPoll.id,
         name,
         moderated,
+        open: poll.open,
         userId
       }
     } catch (err) {
-      throw new Error(`Unable to create poll for user ${userId}`)
+      throw new Error('Unable to create poll')
     }
   },
 
@@ -35,7 +38,7 @@ const PollService = {
       await poll.remove()
       return true
     } catch (error) {
-      throw new Error(`Pool not found for user: ${userId}`)
+      throw new Error('Pool not found for current user')
     }
   }
 }

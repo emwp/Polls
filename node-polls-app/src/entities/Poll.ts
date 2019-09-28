@@ -17,6 +17,15 @@ export class Poll extends BaseEntity {
   @Column()
   name: string
 
+  @Column('timestamptz')
+  createdAt: Date
+
+  @Column('timestamptz', { nullable: true })
+  ClosedAt: Date
+
+  @Column()
+  open: boolean
+
   @Column({ default: true })
   moderated: boolean
 
