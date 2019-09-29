@@ -10,7 +10,7 @@ import { ObjectType, Field } from 'type-graphql'
 
 @ObjectType()
 @Entity('options')
-class PollOption extends BaseEntity {
+class Options extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number
@@ -23,8 +23,8 @@ class PollOption extends BaseEntity {
   @Column()
   votes: number
 
-  @ManyToOne(() => Poll, poll => poll.pollOption, { eager: false })
+  @ManyToOne(() => Poll, poll => poll.options, { eager: false })
   poll: Poll
 }
 
-export { PollOption }
+export { Options }

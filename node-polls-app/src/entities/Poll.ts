@@ -8,7 +8,7 @@ import {
 } from 'typeorm'
 import { User } from './User'
 import { Field, ObjectType } from 'type-graphql'
-import { PollOption } from './PollOption'
+import { Options } from './Options'
 
 @ObjectType()
 @Entity('polls')
@@ -40,9 +40,9 @@ class Poll extends BaseEntity {
   @ManyToOne(() => User, user => user.polls, { eager: false })
   user: User
 
-  @Field(() => [PollOption])
-  @OneToMany(() => PollOption, pollOption => pollOption.poll, { eager: true })
-  pollOption: PollOption[]
+  @Field(() => [Options])
+  @OneToMany(() => Options, options => options.poll, { eager: true })
+  options: Options[]
 }
 
 export { Poll }
