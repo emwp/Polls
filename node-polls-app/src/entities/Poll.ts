@@ -25,12 +25,12 @@ class Poll extends BaseEntity {
   @Column('timestamptz')
   createdAt: Date
 
-  @Field({ nullable: true })
+  @Field()
   @Column('timestamptz', { nullable: true })
   ClosedAt: Date
 
   @Field()
-  @Column()
+  @Column({ default: true })
   open: boolean
 
   @Field()

@@ -12,7 +12,6 @@ const PollService = {
       poll.name = name
       poll.moderated = moderated
       poll.user = user
-      poll.open = true
       poll.createdAt = new Date()
 
       const persistedPoll = await poll.save()
@@ -26,6 +25,19 @@ const PollService = {
       }
     } catch (err) {
       throw new Error('Unable to create poll')
+    }
+  },
+
+  closePoll: async (id: string, userId: string) : Promise<Poll> => {
+    try {
+      const poll = await Poll.findOneOrFail({ where: { id: id, user: userId } })
+      poll.open = false
+      poll.ClosedAt = new Date()
+
+      await poll.save()
+      return poll
+    } catch (error) {
+      throw new Error('Unable to close poll')
     }
   },
 
@@ -48,7 +60,7 @@ const PollService = {
       console.log(polls)
       return polls
     } catch (error) {
-      throw new Error('You fucked up!')
+      throw new Error('Unable to retrieve user polls')
     }
   }
 }

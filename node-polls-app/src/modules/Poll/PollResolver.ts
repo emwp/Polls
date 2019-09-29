@@ -27,6 +27,16 @@ class PollResolver {
     return PollService.registerPoll(name, moderated, userId)
   }
 
+  @Mutation(() => Poll)
+  @UseMiddleware(isAuth)
+  async closePoll (
+    @Arg('id') id: string,
+    @Ctx() { payload } : MyContext
+  ) : Promise<Poll> {
+    const userId = payload!.userId
+    return PollService.closePoll(id, userId)
+  }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async removePoll (
