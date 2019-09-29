@@ -1,11 +1,21 @@
-import { Resolver, Mutation, Arg, UseMiddleware, Ctx } from 'type-graphql'
+import { Resolver, Mutation, Arg, UseMiddleware, Ctx, Query } from 'type-graphql'
 import { isAuth } from '../Authentication/isAuth'
 import { PollService } from './PollService'
 import { MyContext } from './../../MyContext'
 import { PollCreatedResponse } from './types'
+import { Poll } from './../../entities/Poll'
 
 @Resolver()
-export class PollResolver {
+class PollResolver {
+  @Query(() => [Poll])
+  @UseMiddleware(isAuth)
+  async getUserPolls (
+    @Ctx() { payload } : MyContext
+  ) : Promise<Poll[]> {
+    const userId = payload!.userId
+    return PollService.getUserPolls(userId)
+  }
+
   @Mutation(() => PollCreatedResponse)
   @UseMiddleware(isAuth)
   async registerPoll (
@@ -27,3 +37,5 @@ export class PollResolver {
     return PollService.removePoll(id, userId)
   }
 }
+
+export { PollResolver }

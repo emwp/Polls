@@ -40,6 +40,16 @@ const PollService = {
     } catch (error) {
       throw new Error('Pool not found for current user')
     }
+  },
+
+  getUserPolls: async (userId: string) : Promise<Poll[]> => {
+    try {
+      const polls = await Poll.find({ where: { user: userId }, order: { name: 'ASC' } })
+      console.log(polls)
+      return polls
+    } catch (error) {
+      throw new Error('You fucked up!')
+    }
   }
 }
 
