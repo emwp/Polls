@@ -3,21 +3,35 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany
+  OneToMany,
+  ManyToMany
 } from 'typeorm'
+import { ObjectType, Field } from 'type-graphql'
 import { Poll } from './Poll'
+import { Option } from './Option'
 
+@ObjectType()
 @Entity('users')
-export class User extends BaseEntity {
+class User extends BaseEntity {
+  @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string
 
+  @Field()
   @Column()
   email: string
 
+  @Field()
   @Column()
   password: string
 
+  @Field(() => [Poll])
   @OneToMany(() => Poll, poll => poll.user, { eager: true })
   polls: Poll[]
+
+  @Field(() => [Option])
+  @ManyToMany(() => Option, option => option.voters, { nullable: true })
+  options: Option[]
 }
+
+export { User }

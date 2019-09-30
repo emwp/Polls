@@ -3,14 +3,17 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  ManyToOne
+  ManyToOne,
+  ManyToMany,
+  JoinTable
 } from 'typeorm'
-import { Poll } from './Poll'
 import { ObjectType, Field } from 'type-graphql'
+import { Poll } from './Poll'
+import { User } from './User'
 
 @ObjectType()
 @Entity('options')
-class Options extends BaseEntity {
+class Option extends BaseEntity {
   @Field()
   @PrimaryGeneratedColumn()
   id: number
@@ -20,11 +23,17 @@ class Options extends BaseEntity {
   description: string
 
   @Field()
-  @Column()
+  @Column({ default: 0 })
   votes: number
 
+  @Field(() => [User])
+  @ManyToMany(() => User, user => user.options, { nullable: true })
+  @JoinTable()
+  voters: User[]
+
+  @Field(() => Poll)
   @ManyToOne(() => Poll, poll => poll.options, { eager: false })
   poll: Poll
 }
 
-export { Options }
+export { Option }

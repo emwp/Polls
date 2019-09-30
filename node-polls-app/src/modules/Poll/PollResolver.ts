@@ -4,6 +4,7 @@ import { PollService } from './PollService'
 import { MyContext } from './../../MyContext'
 import { PollCreatedResponse } from './types'
 import { Poll } from './../../entities/Poll'
+import { Option } from '../../entities/Option'
 
 @Resolver()
 class PollResolver {
@@ -45,6 +46,17 @@ class PollResolver {
   ): Promise<boolean> {
     const userId = payload!.userId
     return PollService.removePoll(id, userId)
+  }
+
+  @Mutation(() => Option)
+  @UseMiddleware(isAuth)
+  async addPollOption (
+    @Arg('pollId') pollId: string,
+    @Arg('description') description: string,
+    @Ctx() { payload } : MyContext
+  ): Promise<Option> {
+    const userId = payload!.userId
+    return PollService.addPollOption(userId, pollId, description)
   }
 }
 

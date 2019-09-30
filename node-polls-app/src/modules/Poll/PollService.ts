@@ -1,5 +1,6 @@
 import { User } from './../../entities/User'
 import { Poll } from '../../entities/Poll'
+import { Option } from '../../entities/Option'
 import { PollCreatedResponse } from './types'
 
 const PollService = {
@@ -57,10 +58,28 @@ const PollService = {
   getUserPolls: async (userId: string) : Promise<Poll[]> => {
     try {
       const polls = await Poll.find({ where: { user: userId }, order: { name: 'ASC' } })
-      console.log(polls)
       return polls
     } catch (error) {
       throw new Error('Unable to retrieve user polls')
+    }
+  },
+
+  addPollOption: async (userId: string, pollId: string, description: string) : Promise<Option> => {
+    try {
+      const poll = await Poll.findOneOrFail({ where: { id: pollId, user: userId } })
+
+      if (!poll.open) {
+        throw new Error('Unable to add options to closed polls')
+      }
+
+      const newOption = new Option()
+      newOption.poll = poll
+      newOption.description = description
+      await newOption.save()
+
+      return newOption
+    } catch (error) {
+      throw new Error(error)
     }
   }
 }
