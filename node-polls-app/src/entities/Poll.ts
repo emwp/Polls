@@ -37,6 +37,7 @@ class Poll extends BaseEntity {
   @Column({ default: true })
   moderated: boolean
 
+  @Field(() => User)
   @ManyToOne(() => User, user => user.polls, { eager: false })
   user: User
 
