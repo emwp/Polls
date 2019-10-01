@@ -8,7 +8,7 @@ export const testConnection = (drop = false) => {
     port: 5432,
     username: 'postgres',
     password: 'postgres',
-    database: 'weeklynaja-test',
+    database: 'polls-app-test',
     synchronize: drop,
     dropSchema: drop,
     // eslint-disable-next-line no-path-concat
