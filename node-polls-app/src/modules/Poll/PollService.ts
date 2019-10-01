@@ -1,6 +1,7 @@
 import { User } from './../../entities/User'
 import { Poll } from '../../entities/Poll'
 import { Option } from '../../entities/Option'
+import { UserOption } from '../../entities/UserOption'
 import { PollCreatedResponse } from './types'
 
 const PollService = {
@@ -14,6 +15,7 @@ const PollService = {
       poll.moderated = moderated
       poll.user = user
       poll.createdAt = new Date()
+      poll.options = poll.options || [Option]
 
       const persistedPoll = await poll.save()
 
@@ -24,7 +26,7 @@ const PollService = {
         open: poll.open,
         userId
       }
-    } catch (err) {
+    } catch (_) {
       throw new Error('Unable to create poll')
     }
   },
@@ -37,7 +39,7 @@ const PollService = {
 
       await poll.save()
       return poll
-    } catch (error) {
+    } catch (_) {
       throw new Error('Unable to close poll')
     }
   },
@@ -50,7 +52,7 @@ const PollService = {
       })
       await poll.remove()
       return true
-    } catch (error) {
+    } catch (_) {
       throw new Error('Pool not found for current user')
     }
   },
@@ -59,7 +61,7 @@ const PollService = {
     try {
       const polls = await Poll.find({ where: { user: userId }, order: { name: 'ASC' } })
       return polls
-    } catch (error) {
+    } catch (_) {
       throw new Error('Unable to retrieve user polls')
     }
   },
@@ -81,6 +83,37 @@ const PollService = {
     } catch (error) {
       throw new Error(error)
     }
+  },
+
+  vote: async (userId: string, pollId: string, optionId: number) : Promise<boolean> => {
+    const votedOnPoll = await UserOption.findOne({ where: { pollId: pollId, userId: userId } })
+    const votedOption = votedOnPoll! && votedOnPoll!.optionId === optionId
+
+    if (votedOnPoll && votedOption) {
+      throw new Error('Already voted in this poll option')
+    }
+
+    if (votedOnPoll && !votedOption) {
+      const previousOptionId = votedOnPoll!.optionId
+      const previousOption = await Option.findOneOrFail({ where: { id: previousOptionId } })
+      previousOption.votes--
+
+      const newOption = await Option.findOneOrFail({ where: { id: optionId } })
+      newOption.votes++
+
+      await UserOption.update(votedOnPoll, { optionId: optionId })
+      await previousOption.save()
+      await newOption.save()
+
+      return true
+    }
+
+    const option = await Option.findOneOrFail({ where: { id: optionId } })
+    option.votes++
+
+    UserOption.create({ optionId: optionId, userId: userId, pollId: pollId }).save()
+    await option.save()
+    return true
   }
 }
 
