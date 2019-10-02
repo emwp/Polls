@@ -1,9 +1,9 @@
 import { Resolver, Mutation, Arg, UseMiddleware, Ctx, Query } from 'type-graphql'
 import { isAuth } from '../Authentication/isAuth'
-import { PollService } from './PollService'
 import { MyContext } from './../../MyContext'
 import { Poll } from './../../entities/Poll'
 import { Option } from '../../entities/Option'
+import { PollService } from './service'
 
 @Resolver()
 class PollResolver {
@@ -13,7 +13,7 @@ class PollResolver {
     @Ctx() { payload } : MyContext
   ) : Promise<Poll[]> {
     const userId = payload!.userId
-    return PollService.getUserPolls(userId)
+    return PollService.GetUserPolls(userId)
   }
 
   @Mutation(() => Poll)
@@ -24,7 +24,7 @@ class PollResolver {
     @Ctx() { payload } : MyContext
   ): Promise<Poll> {
     const userId = payload!.userId
-    return PollService.registerPoll(name, moderated, userId)
+    return PollService.RegisterPoll(name, moderated, userId)
   }
 
   @Mutation(() => Poll)
@@ -34,7 +34,7 @@ class PollResolver {
     @Ctx() { payload } : MyContext
   ) : Promise<Poll> {
     const userId = payload!.userId
-    return PollService.closePoll(id, userId)
+    return PollService.ClosePoll(id, userId)
   }
 
   @Mutation(() => Boolean)
@@ -44,7 +44,7 @@ class PollResolver {
     @Ctx() { payload } : MyContext
   ): Promise<boolean> {
     const userId = payload!.userId
-    return PollService.removePoll(id, userId)
+    return PollService.RemovePoll(id, userId)
   }
 
   @Mutation(() => Option)
@@ -55,7 +55,7 @@ class PollResolver {
     @Ctx() { payload } : MyContext
   ): Promise<Option> {
     const userId = payload!.userId
-    return PollService.addPollOption(userId, pollId, description)
+    return PollService.AddPollOption(userId, pollId, description)
   }
 
   @Mutation(() => Boolean)
@@ -66,7 +66,7 @@ class PollResolver {
     @Ctx() { payload } : MyContext
   ): Promise<boolean> {
     const userId = payload!.userId
-    return PollService.vote(userId, pollId, optionId)
+    return PollService.Vote(userId, pollId, optionId)
   }
 }
 
