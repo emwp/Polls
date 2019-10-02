@@ -2,30 +2,23 @@ import { User } from './../../entities/User'
 import { Poll } from '../../entities/Poll'
 import { Option } from '../../entities/Option'
 import { UserOption } from '../../entities/UserOption'
-import { PollCreatedResponse } from './types'
 
 const PollService = {
-  registerPoll: async (name: string, moderated: boolean, userId: string) : Promise<PollCreatedResponse> => {
+  registerPoll: async (name: string, moderated: boolean, userId: string) : Promise<Poll> => {
     try {
       const user = await User.findOneOrFail({ where: { id: userId } })
       user.password = ''
 
-      const poll = new Poll()
-      poll.name = name
-      poll.moderated = moderated
-      poll.user = user
-      poll.createdAt = new Date()
-      poll.options = poll.options || [Option]
+      const poll = Poll.create({ 
+        name: name, 
+        moderated: moderated, 
+        user: user, 
+        createdAt: new Date()
+      })
 
-      const persistedPoll = await poll.save()
+      await poll.save()
 
-      return {
-        id: persistedPoll.id,
-        name,
-        moderated,
-        open: poll.open,
-        userId
-      }
+      return poll
     } catch (_) {
       throw new Error('Unable to create poll')
     }
@@ -34,13 +27,20 @@ const PollService = {
   closePoll: async (id: string, userId: string) : Promise<Poll> => {
     try {
       const poll = await Poll.findOneOrFail({ where: { id: id, user: userId } })
+      const isClosed = poll.ClosedAt && !poll.open
+
+      if (isClosed) {
+        throw new Error('Unable to close. This poll is already closed')
+      }
+
       poll.open = false
       poll.ClosedAt = new Date()
 
       await poll.save()
       return poll
-    } catch (_) {
-      throw new Error('Unable to close poll')
+    } catch (error) {
+      console.log(error)
+      throw new Error(error)
     }
   },
 
@@ -73,10 +73,12 @@ const PollService = {
       if (!poll.open) {
         throw new Error('Unable to add options to closed polls')
       }
+      
+      const newOption = Option.create({
+        poll: poll,
+        description: description
+      })
 
-      const newOption = new Option()
-      newOption.poll = poll
-      newOption.description = description
       await newOption.save()
 
       return newOption
@@ -86,6 +88,9 @@ const PollService = {
   },
 
   vote: async (userId: string, pollId: string, optionId: number) : Promise<boolean> => {
+    /*
+      TODO: REFACTOR THIS SHIT
+    */
     const votedOnPoll = await UserOption.findOne({ where: { pollId: pollId, userId: userId } })
     const votedOption = votedOnPoll! && votedOnPoll!.optionId === optionId
 
