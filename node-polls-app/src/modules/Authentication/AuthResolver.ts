@@ -1,22 +1,15 @@
-import { Resolver, Query, Mutation, Arg, UseMiddleware } from 'type-graphql'
-import { UserResponse, LoginResponse } from './types'
-import { isAuth } from './isAuth'
-import { AuthService } from './AuthService'
+import { Resolver, Mutation, Arg } from 'type-graphql'
+import { LoginResponse } from './auth-utils/types'
+import { AuthService } from './service/index'
 
 @Resolver()
 export class AuthResolver {
-  @Query(() => [UserResponse])
-  @UseMiddleware(isAuth)
-  async users (): Promise<UserResponse[]> {
-    return AuthService.getUsers()
-  }
-
   @Mutation(() => Boolean)
   async register (
     @Arg('email') email: string,
     @Arg('password') password: string
   ): Promise<boolean> {
-    return AuthService.register(email, password)
+    return AuthService.Register(email, password)
   }
 
   @Mutation(() => LoginResponse)
@@ -24,6 +17,6 @@ export class AuthResolver {
     @Arg('email') email: string,
     @Arg('password') password: string
   ): Promise<LoginResponse> {
-    return AuthService.login(email, password)
+    return AuthService.Login(email, password)
   }
 }

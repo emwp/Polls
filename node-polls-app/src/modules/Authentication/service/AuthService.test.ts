@@ -1,5 +1,5 @@
-import { testConnection } from '../../test-utils/testConnection'
-import { gqlCall } from '../../test-utils/gqlCall'
+import { testConnection } from '../../../test-utils/testConnection'
+import { gqlCall } from '../../../test-utils/gqlCall'
 import { Connection } from 'typeorm'
 
 let conn: Connection

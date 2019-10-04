@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Arg, UseMiddleware, Ctx, Query } from 'type-graphql'
-import { isAuth } from '../Authentication/isAuth'
+import { isAuth } from '../Authentication/auth-utils/isAuth'
 import { MyContext } from './../../MyContext'
 import { Poll } from './../../entities/Poll'
 import { Option } from '../../entities/Option'
