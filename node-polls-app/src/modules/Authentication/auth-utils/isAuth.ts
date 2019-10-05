@@ -4,7 +4,7 @@ import { verify } from 'jsonwebtoken'
 
 export const isAuth: MiddlewareFn<MyContext> = ({ context }, next) => {
   const authorization = context.req.headers.authorization
-  const accessSecret = process.env.ACCESS_TOKEN_SECRET
+  const accessSecret = process.env.ACCESS_TOKEN_SECRET || 'verysecretaccesssecret'
 
   if (!authorization) {
     throw new Error('Not Authenticated')
