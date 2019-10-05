@@ -1,4 +1,6 @@
-import { ObjectType, Field } from 'type-graphql'
+import 'reflect-metadata'
+import { ObjectType, Field, InputType } from 'type-graphql'
+import { MinLength, IsEmail } from 'class-validator'
 
 @ObjectType()
 class LoginResponse {
@@ -6,4 +8,15 @@ class LoginResponse {
   accessToken: string
 }
 
-export { LoginResponse }
+@InputType()
+class RegisterInput {
+  @Field()
+  @IsEmail()
+  email: string
+
+  @Field()
+  @MinLength(6)
+  password: string
+}
+
+export { LoginResponse, RegisterInput }

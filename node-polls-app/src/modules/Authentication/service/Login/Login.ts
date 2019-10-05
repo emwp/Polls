@@ -1,9 +1,10 @@
 import { compare } from 'bcryptjs'
 
-import { User } from '../../../../entities/User'
 import { createAccessToken } from '../../auth-utils/authToken'
+import { LoginResponse } from '../../auth-utils/types'
+import { User } from '../../../../entities/User'
 
-export const Login = async (email: string, password: string) => {
+export const Login = async (email: string, password: string) : Promise<LoginResponse> => {
   const user = await User.findOne({ where: { email } })
 
   if (!user) {

@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql'
-import { LoginResponse } from './auth-utils/types'
+import { LoginResponse, RegisterInput } from './auth-utils/types'
 import { AuthService } from './service'
 
 @Resolver()
@@ -11,10 +11,9 @@ export class AuthResolver {
 
   @Mutation(() => Boolean)
   async register (
-    @Arg('email') email: string,
-    @Arg('password') password: string
+    @Arg('registerInput') registerInput : RegisterInput
   ): Promise<boolean> {
-    return AuthService.Register(email, password)
+    return AuthService.Register(registerInput.email, registerInput.password)
   }
 
   @Mutation(() => LoginResponse)
