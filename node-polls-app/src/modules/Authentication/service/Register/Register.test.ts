@@ -1,5 +1,6 @@
 import { testConnection } from '../../../../test-utils/testConnection'
-import { gqlCall } from '../../../../test-utils/gqlCall'
+import { gqlFactory } from '../../../../test-utils/gqlAuthFactory'
+import { Abramov } from '../../../../test-utils/mockUsers'
 import { Connection } from 'typeorm'
 
 let conn: Connection
@@ -12,37 +13,9 @@ afterAll(async () => {
   await conn.close()
 })
 
-const registerMutation = `
-mutation Register($email: String!, $password: String!) {
-  register(email: $email, password: $password)
-}`
-
-const loginMutation = `
-mutation Login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
-    accessToken
-  }
-}
-`
-
 describe('register', () => {
-  it('should succesfully signup the user', async () => {
-    await gqlCall({
-      source: registerMutation,
-      variableValues: {
-        email: 'test@test.com',
-        password: '1234'
-      }
-    })
-
-    const res2 = await gqlCall({
-      source: loginMutation,
-      variableValues: {
-        email: 'test@test.com',
-        password: '1234'
-      }
-    })
-    // console.log(res2.data![0].login)
-    console.log(res2.data!.login.accessToken)
+  it('should return true if user is registered succesfully', async () => {
+    const register = await gqlFactory.Register(Abramov.email, Abramov.password)
+    expect(register).toBe(true)
   })
 })

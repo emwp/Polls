@@ -1,4 +1,4 @@
-import { gqlCall } from '../gqlCall'
+import { gqlCall } from './gqlCall'
 
 const registerMutation = `
 mutation Register($email: String!, $password: String!) {
@@ -14,23 +14,20 @@ mutation Login($email: String!, $password: String!) {
 }
 `
 
-export const register = async () => {
-  await gqlCall({
+const Register = async (email: string, password: string) : Promise<boolean> => {
+  const res = await gqlCall({
     source: registerMutation,
     variableValues: {
-      email: 'test@test.com',
-      password: '1234'
+      email: email,
+      password: password
     }
   })
+  return res.data!.register
 }
-export const login = async () => {
-  const res2 = await gqlCall({
-    source: loginMutation,
-    variableValues: {
-      email: 'test@test.com',
-      password: '1234'
-    }
-  })
 
-  return res2
+const Login = () => console.log(loginMutation)
+
+export const gqlFactory = {
+  Register,
+  Login
 }
