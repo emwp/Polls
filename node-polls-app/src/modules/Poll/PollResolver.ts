@@ -4,6 +4,7 @@ import { MyContext } from './../../MyContext'
 import { Poll } from './../../entities/Poll'
 import { Option } from '../../entities/Option'
 import { PollService } from './service'
+import { RegisterPollInput } from './poll-utils/types'
 
 @Resolver()
 class PollResolver {
@@ -19,12 +20,11 @@ class PollResolver {
   @Mutation(() => Poll)
   @UseMiddleware(isAuth)
   async registerPoll (
-    @Arg('name') name: string,
-    @Arg('moderated') moderated: boolean,
+    @Arg('registerPollInput') registerPollInput : RegisterPollInput,
     @Ctx() { payload } : MyContext
   ): Promise<Poll> {
     const userId = payload!.userId
-    return PollService.RegisterPoll(name, moderated, userId)
+    return PollService.RegisterPoll(registerPollInput.name, registerPollInput.moderated, userId)
   }
 
   @Mutation(() => Poll)

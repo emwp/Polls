@@ -5,11 +5,11 @@ import { Connection } from 'typeorm'
 
 let conn: Connection
 
-beforeEach(async () => {
+beforeAll(async () => {
   conn = await testConnection()
 })
 
-afterEach(async () => {
+afterAll(async () => {
   await conn.close()
 })
 

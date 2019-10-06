@@ -42,8 +42,10 @@ describe('register poll', () => {
     const pollInfo = {
       name: 'will this test pass?',
       moderated: true,
-      userId
+      userId,
+      date: new Date()
     }
+    const today = pollInfo.date.toLocaleDateString('pt-BR')
 
     try {
       const poll = await PollService.RegisterPoll(pollInfo.name, pollInfo.moderated, pollInfo.userId)
@@ -51,6 +53,7 @@ describe('register poll', () => {
       expect(poll.name).toBe(pollInfo.name)
       expect(poll.moderated).toBe(pollInfo.moderated)
       expect(poll.user.id).toBe(pollInfo.userId)
+      expect(poll.createdAt.toLocaleDateString('pt-BR')).toBe(today)
     } catch (error) {
       expect(error).toBeNull()
     }
