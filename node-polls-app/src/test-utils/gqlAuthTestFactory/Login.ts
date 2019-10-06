@@ -29,8 +29,9 @@ export const Login = async (email: string, password: string) : Promise<any> => {
     return { result, error }
   }
 
+  const token: string = res.data!.login.accessToken
   result = decode(res.data!.login.accessToken)
   error = null
 
-  return { result, error }
+  return { token, result, error }
 }
