@@ -1,4 +1,4 @@
-import { Poll } from "../../../../entities/Poll"
+import { Poll } from '../../../../entities/Poll'
 
 export const ClosePoll = async (id: string, userId: string) : Promise<Poll> => {
   try {
@@ -15,7 +15,6 @@ export const ClosePoll = async (id: string, userId: string) : Promise<Poll> => {
     await poll.save()
     return poll
   } catch (error) {
-    console.log(error)
     throw new Error(error)
   }
 }
