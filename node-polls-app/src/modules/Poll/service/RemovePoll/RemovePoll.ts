@@ -1,4 +1,4 @@
-import { Poll } from "../../../../entities/Poll"
+import { Poll } from '../../../../entities/Poll'
 
 export const RemovePoll = async (id: string, userId: string) : Promise<boolean> => {
   try {
