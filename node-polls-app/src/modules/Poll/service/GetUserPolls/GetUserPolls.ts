@@ -1,4 +1,4 @@
-import { Poll } from "../../../../entities/Poll"
+import { Poll } from '../../../../entities/Poll'
 
 export const GetUserPolls = async (userId: string) : Promise<Poll[]> => {
   try {
