@@ -1,5 +1,5 @@
-import { Poll } from "../../../../entities/Poll"
-import { Option } from "../../../../entities/Option"
+import { Poll } from '../../../../entities/Poll'
+import { Option } from '../../../../entities/Option'
 
 export const AddPollOption = async (userId: string, pollId: string, description: string) : Promise<Option> => {
   try {
