@@ -58,13 +58,13 @@ class PollResolver {
     return PollService.AddPollOption(userId, pollId, description)
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Option)
   @UseMiddleware(isAuth)
   async vote (
     @Arg('pollId') pollId: string,
     @Arg('optionId') optionId: number,
     @Ctx() { payload } : MyContext
-  ): Promise<boolean> {
+  ): Promise<Option> {
     const userId = payload!.userId
     return PollService.Vote(userId, pollId, optionId)
   }

@@ -1,7 +1,7 @@
-import { UserOption } from "../../../../entities/UserOption"
-import { Option } from "../../../../entities/Option"
+import { UserOption } from '../../../../entities/UserOption'
+import { Option } from '../../../../entities/Option'
 
-export const Vote = async (userId: string, pollId: string, optionId: number) : Promise<boolean> => {
+export const Vote = async (userId: string, pollId: string, optionId: number) : Promise<Option> => {
   /*
     TODO: REFACTOR THIS SHIT
   */
@@ -24,7 +24,7 @@ export const Vote = async (userId: string, pollId: string, optionId: number) : P
     await previousOption.save()
     await newOption.save()
 
-    return true
+    return newOption
   }
 
   const option = await Option.findOneOrFail({ where: { id: optionId } })
@@ -32,5 +32,5 @@ export const Vote = async (userId: string, pollId: string, optionId: number) : P
 
   UserOption.create({ optionId: optionId, userId: userId, pollId: pollId }).save()
   await option.save()
-  return true
+  return option
 }
