@@ -36,6 +36,29 @@ describe('close poll', () => {
     }
   })
 
+  it('should throw error when the poll is already closed', async () => {
+    const poll = {
+      id: faker.random.uuid(),
+      name: faker.random.words(3),
+      moderated: true
+    }
+
+    try {
+      await AuthTestFactory.Register(user.email, user.password)
+      const login = await AuthTestFactory.Login(user.email, user.password)
+      const { userId } = login.result
+
+      const newPoll = await PollService.RegisterPoll(poll.name, poll.moderated, userId)
+      expect(newPoll.open).toBe(true)
+      const closedPoll = await PollService.ClosePoll(newPoll.id, userId)
+      expect(closedPoll.open).toBe(false)
+
+      await PollService.ClosePoll(closedPoll.id, userId)
+    } catch (error) {
+      expect(error.message).toInclude('Unable to close. This poll is already closed')
+    }
+  })
+
   it('should throw error when the user is not the poll owner', async () => {
     await AuthTestFactory.Register(user.email, user.password)
     const login = await AuthTestFactory.Login(user.email, user.password)
@@ -47,9 +70,8 @@ describe('close poll', () => {
       user: { userId }
     }
 
-    const poll = await PollService.RegisterPoll(pollInfo.name, pollInfo.moderated, pollInfo.user.userId)
-
     try {
+      const poll = await PollService.RegisterPoll(pollInfo.name, pollInfo.moderated, pollInfo.user.userId)
       await PollService.ClosePoll(poll.id, faker.random.uuid())
     } catch (error) {
       expect(error.message).toInclude('EntityNotFound: Could not find any entity of type "Poll"')
