@@ -1,19 +1,35 @@
 import React, { FC } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
+import { useQuery } from '@apollo/react-hooks'
+import { gql } from 'apollo-boost'
 
 interface Props {
   navigation: NavigationStackProp
 }
 
-export const HomeScreen: FC<Props> = ({ navigation }) => {
+export const HomeScreen: FC<Props> = () => {
+  const {data, loading} = useQuery(gql`
+  query {
+    hello
+  }
+  `)
+
+  if (loading) {
+    return (
+      <View>
+        <Text>
+          Loading
+        </Text>
+      </View>
+    )
+  }
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ marginBottom: 20 }}>Home Screen</Text>
-      <Button
-        title='Go To Auth Screen'
-        onPress={() => navigation.navigate('Auth')}
-      />
+    <View>
+      {console.log(data)}
+      <Text>
+        {JSON.stringify(data)}
+      </Text>
     </View>
   )
 }
