@@ -1,21 +1,16 @@
 import React, { FC } from 'react'
 import { View, Text } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
-import { useQuery } from '@apollo/react-hooks'
-import { gql } from 'apollo-boost'
+import { useHelloQuery } from '../graphql/generated/graphql'
 
 interface Props {
   navigation: NavigationStackProp
 }
 
 export const HomeScreen: FC<Props> = () => {
-  const {data, loading} = useQuery(gql`
-  query {
-    hello
-  }
-  `)
+  const {data, loading} = useHelloQuery()
 
-  if (loading) {
+  if (loading || !data) {
     return (
       <View>
         <Text>
@@ -26,9 +21,8 @@ export const HomeScreen: FC<Props> = () => {
   }
   return (
     <View>
-      {console.log(data)}
       <Text>
-        {JSON.stringify(data)}
+        {data.hello}
       </Text>
     </View>
   )
