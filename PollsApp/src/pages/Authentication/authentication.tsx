@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
-import AsyncStorage from '@react-native-community/async-storage'
+import { setToken, TOKEN_NAME } from '../../utils'
 
 import {
   useRegisterMutation,
@@ -23,10 +23,6 @@ interface Props {
   navigation: NavigationStackProp
 }
 
-const setToken = async (key: string, value: string) => {
-  await AsyncStorage.setItem(key, value)
-}
-
 export const AuthScreen: React.FC<Props> = ({ navigation }) => {
 
   const [authState, setAuthState] = useState('Login')
@@ -40,10 +36,10 @@ export const AuthScreen: React.FC<Props> = ({ navigation }) => {
 
     if (result.data!.login.accessToken) {
       const token = result.data!.login.accessToken
-      setToken('accessToken', token)
+      setToken(TOKEN_NAME, token)
       setEmail('')
       setPassword('')
-      navigation.navigate('Home')
+      navigation.push('Home')
     }
   }
 

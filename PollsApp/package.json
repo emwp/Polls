@@ -39,6 +39,7 @@
     "@types/react-native": "0.60.15",
     "@types/styled-components": "^4.1.19",
     "babel-jest": "^24.1.0",
+    "eslint-plugin-react-hooks": "^2.1.2",
     "jest": "^24.1.0",
     "metro-react-native-babel-preset": "^0.51.1",
     "reactotron-react-native": "^4.0.2",

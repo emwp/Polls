@@ -1,41 +1,39 @@
 import React, { useState } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, ActivityIndicator } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
-import { useHelloQuery } from '../graphql/generated/graphql'
-import AsyncStorage from '@react-native-community/async-storage';
+import { getToken, removeToken } from '../utils'
+import { Screens } from '../navigation/Navigator'
+import { ScrollView } from 'react-native-gesture-handler'
 
 interface Props {
   navigation: NavigationStackProp
 }
 
-export const HomeScreen: React.FC<Props> = () => {
-  const {data, loading} = useHelloQuery()
-  const [ token, setToken ] = useState('')
+export const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const [token, setToken] = useState('')
+  const [loading, setLoading] = useState(true)
 
-  const getData = async () => {
-      const value = await AsyncStorage.getItem('accessToken')
-      setToken(value!)
-  }
+  getToken().then(res => {
+    if (res === '') {
+      navigation.navigate(Screens.AUTH)
+    } else {
+      setToken(res)
+      setLoading(false)
+    }
+  })
 
-  if (loading || !data) {
-    return (
-      <View>
-        <Text>
-          Loading
-        </Text>
-      </View>
-    )
-  }
   return (
-    <View>
-      <Text>
-        {data.hello}
-      </Text>
-      <Button
-        title="GET TOKEN"
-        onPress={getData}
-      />
-      <Text>{token}</Text>
-    </View>
+    <ScrollView>
+      {loading ? (
+        <View>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      ) : (
+        <View>
+          <Text>{token}</Text>
+          <Button title="remove" onPress={removeToken} />
+        </View>
+      )}
+    </ScrollView>
   )
 }
