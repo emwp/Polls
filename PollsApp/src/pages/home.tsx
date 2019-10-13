@@ -1,14 +1,21 @@
-import React, { FC } from 'react'
-import { View, Text } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, Button } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { useHelloQuery } from '../graphql/generated/graphql'
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface Props {
   navigation: NavigationStackProp
 }
 
-export const HomeScreen: FC<Props> = () => {
+export const HomeScreen: React.FC<Props> = () => {
   const {data, loading} = useHelloQuery()
+  const [ token, setToken ] = useState('')
+
+  const getData = async () => {
+      const value = await AsyncStorage.getItem('accessToken')
+      setToken(value!)
+  }
 
   if (loading || !data) {
     return (
@@ -24,6 +31,11 @@ export const HomeScreen: FC<Props> = () => {
       <Text>
         {data.hello}
       </Text>
+      <Button
+        title="GET TOKEN"
+        onPress={getData}
+      />
+      <Text>{token}</Text>
     </View>
   )
 }

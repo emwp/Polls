@@ -2,15 +2,20 @@ import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
 import { HomeScreen } from '../pages/home'
-import { AuthScreen } from '../pages/authentication'
+import { AuthScreen } from '../pages/Authentication/authentication'
 
 const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
-    Auth: AuthScreen
+    Auth: {
+      screen: AuthScreen,
+      navigationOptions: () => ({
+        headerTransparent: true
+      })
+    }
   },
   {
-    initialRouteName: 'Home'
+    initialRouteName: 'Auth',    
   }
 )
 
