@@ -12,11 +12,16 @@ export const Screens = {
 
 const AppNavigator = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: () => ({
+        header: null
+      })
+    },
     Auth: {
       screen: AuthScreen,
       navigationOptions: () => ({
-        headerTransparent: true
+        header: null,
       })
     }
   },

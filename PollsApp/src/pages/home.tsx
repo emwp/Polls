@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, Button, ActivityIndicator } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
 import { getToken, removeToken } from '../utils'
@@ -13,14 +13,16 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [token, setToken] = useState('')
   const [loading, setLoading] = useState(true)
 
-  getToken().then(res => {
-    if (res === '') {
-      navigation.navigate(Screens.AUTH)
-    } else {
-      setToken(res)
-      setLoading(false)
-    }
-  })
+  useEffect(() => {
+    getToken().then(res => {
+      if (res === '') {
+        navigation.navigate(Screens.AUTH)
+      } else {
+        setToken(res)
+        setLoading(false)
+      }
+    })
+  }, [navigation])
 
   return (
     <ScrollView>
