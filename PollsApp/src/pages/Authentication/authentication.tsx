@@ -7,24 +7,22 @@ import {
   useLoginMutation,
 } from '../../graphql/generated/graphql'
 
+import { Input, Form, AuthOptions } from './styles'
+
 import {
   Container,
   Title,
-  Input,
-  Form,
   ButtonContainer,
   ButtonText,
   Text,
   TextButton,
-  AuthOptions,
-} from './styles'
+} from '../../components'
 
 interface Props {
   navigation: NavigationStackProp
 }
 
 export const AuthScreen: React.FC<Props> = ({ navigation }) => {
-
   const [authState, setAuthState] = useState('Login')
   const [email, setEmail] = useState('fullstack@gmail.com')
   const [password, setPassword] = useState('123456')

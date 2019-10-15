@@ -1,0 +1,8 @@
+query GetUserPolls {
+  getUserPolls {
+    id
+    name
+    open
+    moderated
+  }
+}

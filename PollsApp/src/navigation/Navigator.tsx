@@ -1,7 +1,7 @@
 import { createAppContainer } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
-import { HomeScreen } from '../pages/home'
+import { HomeScreen } from '../pages/Home/home'
 import { AuthScreen } from '../pages/Authentication/authentication'
 
 export const Screens = {

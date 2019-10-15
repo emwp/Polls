@@ -112,6 +112,17 @@ export type User = {
   polls: Array<Poll>,
 };
 
+export type GetUserPollsQueryVariables = {};
+
+
+export type GetUserPollsQuery = (
+  { __typename?: 'Query' }
+  & { getUserPolls: Array<(
+    { __typename?: 'Poll' }
+    & Pick<Poll, 'id' | 'name' | 'open' | 'moderated'>
+  )> }
+);
+
 export type HelloQueryVariables = {};
 
 
@@ -146,6 +157,41 @@ export type RegisterMutation = (
 );
 
 
+export const GetUserPollsDocument = gql`
+    query GetUserPolls {
+  getUserPolls {
+    id
+    name
+    open
+    moderated
+  }
+}
+    `;
+
+/**
+ * __useGetUserPollsQuery__
+ *
+ * To run a query within a React component, call `useGetUserPollsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserPollsQuery` returns an object from Apollo Client that contains loading, error, and data properties 
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserPollsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetUserPollsQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetUserPollsQuery, GetUserPollsQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetUserPollsQuery, GetUserPollsQueryVariables>(GetUserPollsDocument, baseOptions);
+      }
+export function useGetUserPollsLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetUserPollsQuery, GetUserPollsQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetUserPollsQuery, GetUserPollsQueryVariables>(GetUserPollsDocument, baseOptions);
+        }
+export type GetUserPollsQueryHookResult = ReturnType<typeof useGetUserPollsQuery>;
+export type GetUserPollsLazyQueryHookResult = ReturnType<typeof useGetUserPollsLazyQuery>;
+export type GetUserPollsQueryResult = ApolloReactCommon.QueryResult<GetUserPollsQuery, GetUserPollsQueryVariables>;
 export const HelloDocument = gql`
     query Hello {
   hello
