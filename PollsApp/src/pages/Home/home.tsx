@@ -7,7 +7,7 @@ import { getToken, removeToken } from '../../utils'
 import { Screens } from '../../navigation/Navigator'
 
 import { Container } from '../../components'
-import { CardContainer, Text, PollItem, FaIcon } from './styles'
+import { CardContainer, Text, PollItem, Icon } from './styles'
 
 interface Props {
   navigation: NavigationStackProp
@@ -40,7 +40,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
     return (
       <PollItem>
         <Text>{poll.name}</Text>
-        <FaIcon name="info-circle" size={30} color="purple"/>
+        <Icon/>
       </PollItem>
     )
   }

@@ -9,7 +9,7 @@ if (__DEV__) {
 }
 
 const client = new ApolloClient({
-  uri: 'http://10.0.2.2:4000/graphql',
+  uri: 'http://192.168.0.112:4000/graphql',
   request: async (operation) => {
     const token = await getToken()
     operation.setContext({

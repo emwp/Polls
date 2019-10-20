@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
-import Icon from 'react-native-vector-icons/FontAwesome'
+// import { Icon as EvaIcon } from 'react-native-eva-icons'
+import EvaIcon from 'react-native-eva-icons/icons/InfoOutline'
 
 export const CardContainer = styled.View`
   margin: 30px 15px;
@@ -17,8 +18,10 @@ export const Text = styled.Text`
   margin: 0 10px;
 `
 
-export const FaIcon = styled(Icon)`
+export const Icon = styled(EvaIcon)`
   margin: 0 10px;
+  width: 32px;
+  height: 32px;
 `
 
 export const PollItem = styled.View`
