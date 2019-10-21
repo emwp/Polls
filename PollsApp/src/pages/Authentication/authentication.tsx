@@ -23,6 +23,7 @@ interface Props {
 
 export const AuthScreen: React.FC<Props> = ({ navigation }) => {
   const [authState, setAuthState] = useState('Login')
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [register] = useRegisterMutation()
@@ -41,7 +42,7 @@ export const AuthScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   const submitRegister = async () => {
-    const result = await register({ variables: { email, password } })
+    const result = await register({ variables: { name, email, password } })
     if (result.data!.register) {
       setAuthState('Login')
     }
@@ -52,6 +53,15 @@ export const AuthScreen: React.FC<Props> = ({ navigation }) => {
       <Form>
         <Title>Polls App</Title>
         <Title>{authState}</Title>
+        { authState === 'Register' &&
+          <Input
+            placeholder="Name"
+            value={name}
+            onChangeText={text => setName(text)}
+            textContentType="name"
+            autoCorrect={false}
+          />
+        }
         <Input
           placeholder="Email"
           value={email}
