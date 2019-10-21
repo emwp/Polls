@@ -11,7 +11,7 @@
     "testdb:setup": "ts-node ./src/test-utils/setup.ts",
     "test": "npm run testdb:setup && jest",
     "docker:build": "docker build -t node-polls-app .",
-    "pg-dev": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=polls-app -d -p 5432:5432 -v /home/emwp/docker/pgdata:/var/lib/postgresql/data postgres:11"
+    "pg-dev": "docker run --rm --name pg-docker -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=polls-app -d -p 5432:5432 -v $HOME/docker/pgdata:/var/lib/postgresql/data postgres:11"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
