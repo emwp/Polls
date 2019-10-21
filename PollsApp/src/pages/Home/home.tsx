@@ -1,13 +1,21 @@
 import React, { useState, useEffect } from 'react'
-import { View, Button, ActivityIndicator, FlatList } from 'react-native'
+import { View, ActivityIndicator, FlatList } from 'react-native'
 import { NavigationStackProp } from 'react-navigation-stack'
 
 import { useGetUserPollsQuery } from '../../graphql/generated/graphql'
-import { getToken, removeToken } from '../../utils'
+import { getToken } from '../../utils'
 import { Screens } from '../../navigation/Navigator'
 
-import { Container } from '../../components'
-import { CardContainer, Text, PollItem, Icon } from './styles'
+import {
+  Container,
+  Spacer,
+  Title,
+  Text,
+  SecondaryText,
+  ButtonContainer,
+  ButtonText,
+} from '../../components'
+import { CardContainer, HomeContainer, PollTitle, PollItem, Icon } from './styles'
 
 interface Props {
   navigation: NavigationStackProp
@@ -39,8 +47,8 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const Item = (poll: Poll) => {
     return (
       <PollItem>
-        <Text>{poll.name}</Text>
-        <Icon/>
+        <PollTitle>{poll.name}</PollTitle>
+        <Icon />
       </PollItem>
     )
   }
@@ -52,15 +60,32 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <CardContainer>
-          <FlatList
-            data={data.getUserPolls}
-            renderItem={({ item }) => Item(item)}
-            keyExtractor={item => item.id}
-          />
-        </CardContainer>
+        <>
+          <HomeContainer>
+            <Title>Welcome Everton</Title>
+            <SecondaryText>
+              Create a poll and ask your friends about their opinions.
+            </SecondaryText>
+            <Spacer />
+            <ButtonContainer onPress={() => console.log('pei')}>
+              <ButtonText>Create Poll</ButtonText>
+            </ButtonContainer>
+            <ButtonContainer onPress={() => console.log('pei')}>
+              <ButtonText>Join Poll</ButtonText>
+            </ButtonContainer>
+          </HomeContainer>
+
+          <Text>Your Polls</Text>
+          <Spacer/>
+          <CardContainer>
+            <FlatList
+              data={data.getUserPolls}
+              renderItem={({ item }) => Item(item)}
+              keyExtractor={item => item.id}
+            />
+          </CardContainer>
+        </>
       )}
-      <Button title="Remove Token" onPress={removeToken} />
     </Container>
   )
 }

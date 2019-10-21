@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { NavigationStackProp } from 'react-navigation-stack'
-import { setToken, TOKEN_NAME } from '../../utils'
 
 import {
   useRegisterMutation,
   useLoginMutation,
 } from '../../graphql/generated/graphql'
+import { setToken, TOKEN_NAME } from '../../utils'
 
 import { Input, Form, AuthOptions } from './styles'
-
 import {
   Container,
   Title,
@@ -24,8 +23,8 @@ interface Props {
 
 export const AuthScreen: React.FC<Props> = ({ navigation }) => {
   const [authState, setAuthState] = useState('Login')
-  const [email, setEmail] = useState('fullstack@gmail.com')
-  const [password, setPassword] = useState('123456')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [register] = useRegisterMutation()
   const [login] = useLoginMutation()
 

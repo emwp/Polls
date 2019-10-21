@@ -1,20 +1,23 @@
 import styled from 'styled-components/native'
-// import { Icon as EvaIcon } from 'react-native-eva-icons'
 import EvaIcon from 'react-native-eva-icons/icons/InfoOutline'
 
 export const CardContainer = styled.View`
-  margin: 30px 15px;
   padding: 10px;
-  border: 3px solid purple;
-  background-color: aqua;
+  background-color: #fff;
+  min-height: 300px;
   border-radius: 10px;
 `
 
-export const Text = styled.Text`
+export const HomeContainer = styled.View`
+  justify-content: space-between;
+  padding: 30px 0;
+  align-items: center;
+`
+
+export const PollTitle = styled.Text`
   font-size: 16;
-  flex: 1;
   font-weight: bold;
-  color: rebeccapurple;
+  color: #24243e;
   margin: 0 10px;
 `
 
@@ -31,7 +34,7 @@ export const PollItem = styled.View`
   margin: 10px 0;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid red;
+  border: 2px solid #ccc;
   border-radius: 10px;
 `
 
